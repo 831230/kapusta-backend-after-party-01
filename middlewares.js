@@ -13,7 +13,6 @@ const strategyOptions = {
 
 passport.use(
   new Strategy(strategyOptions, (payload, done) => {
-    console.log({payload});
     User.findOne({ _id: payload.id })
       .then((user) =>
         !user ? done(new Error("User not existing")) : done(null, user)

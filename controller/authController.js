@@ -4,7 +4,12 @@ import bcrypt from "bcrypt";
 
 import { User } from "../model/schema/user.js";
 
-import { findUserByEmail, createUser, updateToken, getExpensesById } from "../model/model.js";
+import {
+  findUserByEmail,
+  createUser,
+  updateToken,
+  getExpensesById,
+} from "../model/model.js";
 
 import Joi from "joi";
 
@@ -17,7 +22,6 @@ const schema = Joi.object({
   password: Joi.string().alphanum().min(5).max(30),
   email: Joi.string().email({ minDomainSegments: 2, multiple: true }),
 });
-
 
 //==================================================
 const hashPassword = async (pwd) => {
@@ -47,7 +51,7 @@ export const loginUser = async (req, res, next) => {
     if (!user || !isValidPassword)
       return res.status(401).json("Email or password is wrong");
 
-    const payload = {id: user._id};
+    const payload = { id: user._id };
     const accessToken = jwt.sign(payload, SECRET_JWT);
     await updateToken(user._id, { accessToken });
 
@@ -58,7 +62,9 @@ export const loginUser = async (req, res, next) => {
       balance: user.balance,
       showBalanceInfo: user.showBalanceInfo,
       id: user._id,
-      transactions
+      expenseCategories: user.expenseCategories,
+      incomeCategories: user.incomeCategories,
+      transactions,
     };
 
     res.status(200).json({ accessToken, userData });
@@ -85,7 +91,7 @@ export const addUser = async (req, res, next) => {
       email,
     });
 
-    res.status(201).json({email: result.email, id: result._id});
+    res.status(201).json({ email: result.email, id: result._id });
   } catch (error) {
     next(error);
   }

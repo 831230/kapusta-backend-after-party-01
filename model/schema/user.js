@@ -24,7 +24,7 @@ const userSchema = new Schema({
   },
   expenseCategories: {
     type: Array,
-    default: ["Transport", "Products", "Health", "Alcohol", "Entertainment", "Housing", "Technique", "Communal, Communication", "Sports, hobbies", "Education", "Other"]
+    default: ["Transport", "Products", "Health", "Alcohol", "Entertainment", "Housing", "Technique", "Communal", "Communication", "Sports", "Hobbies", "Education", "Other"]
   },
   incomeCategories: {
     type: Array,

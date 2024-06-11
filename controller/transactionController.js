@@ -150,7 +150,7 @@ export const deleteTransaction = async (req, res, next) => {
       const newBalance = req.user.balance + expense.amount;
       const updatedBalance = await updateBalance(userId, newBalance);
       console.log({ updatedBalance });
-      return res.status(200).json({ newBalance: updatedBalance });
+      return res.status(200).json({ newBalance: updatedBalance.balance });
     }
 
     const income = await getOneIncomeById(transactionId, userId);
@@ -175,13 +175,34 @@ export const deleteTransaction = async (req, res, next) => {
 //================================================================================
 
 //===========================GET EXPENSE CATEGORIES===============================
+// export const getExpenseCategories = async (req, res, next) => {
+//   try {
+//     const userId = req.user._id;
+//     const expenses = await getExpensesById(userId);
+
+//     const uniqueExpenses = [];
+//     expenses.forEach((el) => {
+//       if (uniqueExpenses.indexOf(el.category) < 0) {
+//         uniqueExpenses.push(el.category);
+//       }
+//     });
+
+//     return res.status(200).json({ uniqueExpenses });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const getExpenseCategories = async (req, res, next) => {
   try {
     const userId = req.user._id;
+    const {period} = req.body;
     const expenses = await getExpensesById(userId);
 
+    const expensesPeriodDate = filterTransactions(period, expenses);
+
     const uniqueExpenses = [];
-    expenses.forEach((el) => {
+    expensesPeriodDate.forEach((el) => {
       if (uniqueExpenses.indexOf(el.category) < 0) {
         uniqueExpenses.push(el.category);
       }
@@ -195,13 +216,34 @@ export const getExpenseCategories = async (req, res, next) => {
 //===============================================================================
 
 //===========================GET INCOME CATEGORIES===============================
+// export const getIncomeCategories = async (req, res, next) => {
+//   try {
+//     const userId = req.user._id;
+//     const incomes = await getIncomesById(userId);
+
+//     const uniqueIncomes = [];
+//     incomes.forEach((el) => {
+//       if (uniqueIncomes.indexOf(el.category) < 0) {
+//         uniqueIncomes.push(el.category);
+//       }
+//     });
+
+//     return res.status(200).json({ uniqueIncomes });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const getIncomeCategories = async (req, res, next) => {
   try {
     const userId = req.user._id;
+    const {period} = req.body;
     const incomes = await getIncomesById(userId);
 
+    const incomesPeriodDate = filterTransactions(period, incomes);
+
     const uniqueIncomes = [];
-    incomes.forEach((el) => {
+    incomesPeriodDate.forEach((el) => {
       if (uniqueIncomes.indexOf(el.category) < 0) {
         uniqueIncomes.push(el.category);
       }
@@ -218,7 +260,9 @@ export const getIncomeCategories = async (req, res, next) => {
 export const getPeriodDateTransactions = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    const period = "2024-05";
+    // const period = "2024-05";
+    const {period} = req.body;
+    // console.log({period});
     const expenses = await getExpensesById(userId);
     const incomes = await getIncomesById(userId);
 

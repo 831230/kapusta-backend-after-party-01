@@ -20,8 +20,8 @@ router.post("/expense", auth, addExpense);
 router.get("/expense", auth, getExpenseStats);
 router.get("/income", auth, getIncomeStats);
 router.delete("/:transactionId", auth, deleteTransaction);
-router.get("/expense-categories", auth, getExpenseCategories);
-router.get("/income-categories", auth, getIncomeCategories);
-router.get("/period-data", auth, getPeriodDateTransactions);
+router.post("/expense-categories", auth, getExpenseCategories);
+router.post("/income-categories", auth, getIncomeCategories);
+router.post("/period-data", auth, getPeriodDateTransactions);
 
 export default router;

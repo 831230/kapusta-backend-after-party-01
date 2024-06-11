@@ -37,14 +37,12 @@ export const filterTransactions = (period, array) => {
   return filteredArray
 };
 
-
 export const createTransactionData = (expenses, incomes) => {
   const incomesData = incomes.reduce((acc, income) => {
     const { category, amount, description } = income;
     if (!acc[category]) {
-      acc[category] = { total: 0 };
+      acc[category] = { [description]: 0 };
     }
-    acc[category].total += amount;
     acc[category][description] = amount;
     return acc;
   }, {});
@@ -52,9 +50,8 @@ export const createTransactionData = (expenses, incomes) => {
   const expensesData = expenses.reduce((acc, expense) => {
     const { category, amount, description } = expense;
     if (!acc[category]) {
-      acc[category] = { total: 0 };
+      acc[category] = { [description]: 0 };
     }
-    acc[category].total += amount;
     acc[category][description] = amount;
     return acc;
   }, {});
@@ -72,6 +69,41 @@ export const createTransactionData = (expenses, incomes) => {
 
   return periodData
 };
+
+// export const createTransactionData = (expenses, incomes) => {
+//   const incomesData = incomes.reduce((acc, income) => {
+//     const { category, amount, description } = income;
+//     if (!acc[category]) {
+//       acc[category] = { total: 0 };
+//     }
+//     acc[category].total += amount;
+//     acc[category][description] = amount;
+//     return acc;
+//   }, {});
+
+//   const expensesData = expenses.reduce((acc, expense) => {
+//     const { category, amount, description } = expense;
+//     if (!acc[category]) {
+//       acc[category] = { total: 0 };
+//     }
+//     acc[category].total += amount;
+//     acc[category][description] = amount;
+//     return acc;
+//   }, {});
+
+//   const periodData = {
+//     incomes: {
+//       total: incomes.reduce((acc, income) => acc + income.amount, 0),
+//       incomesData,
+//     },
+//     expenses: {
+//       total: expenses.reduce((acc, expense) => acc + expense.amount, 0),
+//       expensesData,
+//     },
+//   };
+
+//   return periodData
+// };
 
 
 
